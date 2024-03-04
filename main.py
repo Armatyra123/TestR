@@ -7,6 +7,7 @@ from kivy.uix.boxlayout import BoxLayout
 from instr import *
 from kivy.properties import BooleanProperty
 from kivy.clock import Clock
+from ruffier import test
 
 
 class MyApp(App):
@@ -16,6 +17,7 @@ class MyApp(App):
         sm.add_widget(FirstScreen(name="main"))
         sm.add_widget(SecondScreen(name="pulse_screen"))
         sm.add_widget(ThirdScreen(name="sit_screen"))
+        sm.add_widget(Result(name='result'))
         return sm
 
 
@@ -202,6 +204,21 @@ class ForthScreen(Screen):
         else:
             self.timer.start()
             self.button.disabled = True
+
+
+class Result(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.outer = BoxLayout(orientation='vertical', padding=8, spacing=8)
+        self.instr = Label(text='')
+        self.outer.add_widget(self.instr)
+        self.add_widget(self.outer)
+        self.on_enter = self.before
+
+    def before(self):
+        global name
+        self.instr.text = name + '\n' + test(p1, p2, p3, age)
+
 
 app = MyApp()
 app.run()
